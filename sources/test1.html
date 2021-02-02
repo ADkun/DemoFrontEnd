@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+    <script>
+        var xmlhttp;
+
+        function loadJson() {
+            xmlhttp = null;
+            if (window.XMLHttpRequest) {
+                xmlhttp = new XMLHttpRequest();
+            } else if (window.ActiveXObject) {
+                xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+            }
+            if (xmlhttp != null) {
+                xmlhttp.onreadystatechange = state_Change;
+                xmlhttp.open("GET", "http://localhost:8083/json", true);
+                xmlhttp.send(null);
+            } else {
+                alter("Do not support XMLHTTP.")
+            }
+        }
+
+        function state_Change() {
+            if (xmlhttp.readyState == 4) {
+                if (xmlhttp.status == 200) {
+                    var response = JSON.parse(xmlhttp.responseText);
+                    var num = parseInt(document.getElementById("input").value);
+                    document.getElementById('dsh').innerHTML = response.data[num].age;
+                }
+            }
+        }
+    </script>
+
+</head>
+
+<body>
+    <div>
+        <input type="number" id="input" max="9" min="1"><span>号教师的年龄是：</span><span id="dsh"></span>
+    </div>
+    <button onclick="loadJson()">查找</button>
+
+</body>
+
+</html>
